@@ -49,11 +49,12 @@ class XBeeBase(threading.Thread):
                  XBee device's documentation for more information.
     """
 
-    def __init__(self, ser, shorthand=True, callback=None, escaped=False):
+    def __init__(self, ser, shorthand=True, callback=None, callback_extra_param=None, escaped=False):
         super(XBeeBase, self).__init__()
         self.serial = ser
         self.shorthand = shorthand
         self._callback = None
+        self._callback_extra_param = callback_extra_param
         self._thread_continue = False
         self._escaped = escaped
 
@@ -93,7 +94,7 @@ class XBeeBase(threading.Thread):
         """
         while True:
             try:
-                self._callback(self.wait_read_frame())
+                self._callback(self.wait_read_frame(), self._callback_extra_param)
             except ThreadQuitException:
                 break
 
@@ -397,8 +398,7 @@ class XBeeBase(threading.Thread):
         and returns the resulting dictionary
         """
 
-        frame = self._wait_for_frame()
-        return self._split_response(frame.data)
+        return self._wat_for_frame()
 
     def __getattr__(self, name):
         """
