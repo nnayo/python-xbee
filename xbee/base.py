@@ -398,7 +398,7 @@ class XBeeBase(threading.Thread):
         and returns the resulting dictionary
         """
 
-        return self._wat_for_frame()
+        return self._wait_for_frame()
 
     def __getattr__(self, name):
         """
